@@ -1,45 +1,59 @@
+// import PropTypes from 'prop-types';
+import { Component } from 'react';
+import { BsSearch } from 'react-icons/bs';
+import { toast } from 'react-toastify';
+
 import s from './Searchbar.module.css';
 
-const SearchBar = () => {
-  return (
-    <header className={s.searchbar}>
-      <form className={s.form}>
-        <button type="submit" className={s.button}>
-          <span className={s.buttonLabel}>Search</span>
-        </button>
+class SearchBar extends Component {
+  state = {
+    query: '',
+    isLoad: false,
+  };
+  handleNameChange = event => {
+    this.setState({ query: event.currentTarget.value.toLowerCase() });
+  };
+  onChange = event => {
+    event.preventDefault();
+    if (this.state.query.trim() === '') {
+      toast('Please enter search query!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
 
-        <input
-          className={s.input}
-          type="text"
-          autocomplete="off"
-          autofocus
-          placeholder="Search images and photos"
-        />
-      </form>
-    </header>
-  );
-};
+    this.props.onSubmit(this.state.query);
+    this.setState({ query: '' });
+  };
+  render() {
+    const { query } = this.state;
+    return (
+      <header className={s.searchbar}>
+        <form className={s.form} onSubmit={this.onChange}>
+          <button type="submit" aria-label="Search" className={s.button}>
+            <span className={s.buttonLabel}>
+              <BsSearch />
+            </span>
+          </button>
+          <input
+            className={s.input}
+            type="text"
+            placeholder="Search images and photos"
+            value={query}
+            onChange={this.handleNameChange}
+          />
+        </form>
+      </header>
+    );
+  }
+}
+
 export default SearchBar;
 
-// <header class="container-form bg-secondary bg-gradient shadow">
-//   <form class="js-search-form">
-//     <div
-//       class="input-group d-flex p-3 justify-content-center"
-//       id="search-form"
-//     >
-//       <input
-//         type="text"
-//         class="form-control js-input"
-//         name="query"
-//         autocomplete="off"
-//         placeholder="Search images..."
-//         id="search-box"
-//         maxlength="10"
-//         required
-//       />
-//       <button type="submit" class="btn btn-secondary js-search-btn">
-//         <span class="material-icons-outlined align-bottom">search</span>
-//       </button>
-//     </div>
-//   </form>
-// </header>;
+// MdOutlineSearch;
