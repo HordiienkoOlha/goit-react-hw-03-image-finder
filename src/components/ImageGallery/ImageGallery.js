@@ -1,7 +1,8 @@
 import { Component } from 'react';
-import { Rings } from 'react-loader-spinner';
 
 import ImageGalleryItem from 'components/ImageGalleryItem';
+import Button from 'components/Button';
+import Loader from 'components/Loader';
 import { getPhotos } from '../../services/api';
 import { mapper } from 'helpers/mapper';
 import s from './ImageGallery.module.css';
@@ -11,39 +12,46 @@ class ImageGallery extends Component {
     page: 1,
     photos: [],
     isLoading: false,
-    isShow: false,
   };
+
   componentDidUpdate(prevProps, prevState) {
+    const { page } = this.state;
     const prevName = prevProps.queryInput;
     const nextName = this.props.queryInput;
-    // if (prevState.isShow !== isShow || prevProps.queryInput !== queryInput) {
 
-    if (prevState.isShow !== this.state.isShow || prevName !== nextName) {
+    if (prevName !== nextName) {
       this.setState({ isLoading: true });
-
-      console.log(nextName);
-      this.fetchPhotos(nextName, this.state.page);
+      console.log(this.state.page);
+      this.fetchPhotos(nextName, page);
+    }
+    if (prevState.page !== page) {
+      this.setState({ isLoading: true });
+      this.fetchPhotos(nextName, page);
     }
   }
+
   fetchPhotos = (query, page) => {
     this.setState({ isLoading: true });
     getPhotos(query, page)
       .then(({ data }) => this.setState({ photos: mapper(data.hits) }))
-      .catch(error => console.log(error))
-      .finally(this.setState({ isLoading: false, isShow: true }));
-    //
+      // .catch(error => console.log(error))
+      .finally(this.setState({ isLoading: false }));
+  };
+  onLoadMore = () => {
+    let { page } = this.state;
+    page += 1;
+    this.setState({ page });
+
+    // this.setState(prevState => ({
+    //   photos: [...prevState.photos, ...photos],
+    // }));
   };
   render() {
     const { isLoading, photos } = this.state;
     return (
       <>
-        {isLoading && (
-          <div className={s.spinner}>
-            <Rings color="#3f51b5" height={80} width={80} />
-          </div>
-        )}
-        <p>{this.props.queryInput}</p>
-        {/* {this.state.query && <p>{this.state.query}</p>} */}
+        {isLoading && <Loader />}
+        {/* <Loader /> */}
         <ul className={s.imageGallery}>
           {photos.map(({ id, tags, webformatURL, largeImageURL }) => {
             // console.log(id, tags, webformatURL, largeImageURL);
@@ -58,6 +66,9 @@ class ImageGallery extends Component {
             );
           })}
         </ul>
+        {photos.length > 0 && (
+          <Button name={'Load more'} onHandle={this.onLoadMore}></Button>
+        )}
       </>
     );
   }
