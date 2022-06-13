@@ -7,15 +7,15 @@ import s from './Searchbar.module.css';
 
 class SearchBar extends Component {
   state = {
-    query: '',
-    isLoad: false,
+    queryInput: '',
+    // isLoad: false,
   };
   handleNameChange = event => {
-    this.setState({ query: event.currentTarget.value.toLowerCase() });
+    this.setState({ queryInput: event.currentTarget.value.toLowerCase() });
   };
   onChange = event => {
     event.preventDefault();
-    if (this.state.query.trim() === '') {
+    if (this.state.queryInput.trim() === '') {
       toast('Please enter search query!', {
         position: 'top-right',
         autoClose: 5000,
@@ -28,14 +28,15 @@ class SearchBar extends Component {
       return;
     }
 
-    this.props.onSubmit(this.state.query);
-    this.setState({ query: '' });
+    this.props.onSubmit(this.state.queryInput);
+    this.setState({ queryInput: '' });
   };
   render() {
-    const { query } = this.state;
+    const { queryInput } = this.state;
+    const { onChange, handleNameChange } = this;
     return (
       <header className={s.searchbar}>
-        <form className={s.form} onSubmit={this.onChange}>
+        <form className={s.form} onSubmit={onChange}>
           <button type="submit" aria-label="Search" className={s.button}>
             <span className={s.buttonLabel}>
               <BsSearch />
@@ -45,8 +46,8 @@ class SearchBar extends Component {
             className={s.input}
             type="text"
             placeholder="Search images and photos"
-            value={query}
-            onChange={this.handleNameChange}
+            value={queryInput}
+            onChange={handleNameChange}
           />
         </form>
       </header>
@@ -55,5 +56,3 @@ class SearchBar extends Component {
 }
 
 export default SearchBar;
-
-// MdOutlineSearch;

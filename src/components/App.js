@@ -1,33 +1,29 @@
 import { Component } from 'react';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-// import { Rings } from 'react-loader-spinner';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Searchbar from './Searchbar';
-// import ImageGallery from "./ImageGallery"
-// import { getPhotos } from '../services/api';
-// import { mapper } from 'helpers/mapper';
+import ImageGallery from './ImageGallery';
+
 import s from '../components/App.module.css';
 
 class App extends Component {
   state = {
-    query: '',
+    queryInput: '',
   };
-  onSearch = query => {
-    this.setState({ query });
+  onSearch = queryInput => {
+    this.setState({ queryInput });
   };
   render() {
     const { onSearch } = this;
+    const { queryInput } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={onSearch} />
-        {/* {isLoading && (
-          // <div className={s.spinner}>
-          //   <Rings color="#3f51b5" height={80} width={80} />
-          // </div>
-        )} */}
-        {/* <ImageGallery /> */}
+
+        <ImageGallery queryInput={queryInput} />
         <ToastContainer />
       </div>
     );
