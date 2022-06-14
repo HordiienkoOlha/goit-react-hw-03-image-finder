@@ -1,6 +1,11 @@
 import s from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ tags, webformatURL, largeImageURL }) => {
+const ImageGalleryItem = ({
+  tags,
+  webformatURL,
+  largeImageURL,
+  onClickPicture,
+}) => {
   return (
     <li className={s.imageGalleryItem}>
       <a className="item" href={largeImageURL}>

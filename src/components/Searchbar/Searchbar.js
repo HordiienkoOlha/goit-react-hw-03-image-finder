@@ -8,7 +8,6 @@ import s from './Searchbar.module.css';
 class SearchBar extends Component {
   state = {
     queryInput: '',
-    // isLoad: false,
   };
   handleNameChange = event => {
     this.setState({ queryInput: event.currentTarget.value.toLowerCase() });
