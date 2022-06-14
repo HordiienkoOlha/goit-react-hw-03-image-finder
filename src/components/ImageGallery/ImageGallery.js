@@ -12,6 +12,7 @@ class ImageGallery extends Component {
     page: 1,
     photos: [],
     isLoading: false,
+    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -21,7 +22,7 @@ class ImageGallery extends Component {
 
     if (prevName !== nextName) {
       this.setState({ isLoading: true });
-      console.log(this.state.page);
+      // console.log(this.state.page);
       this.fetchPhotos(nextName, page);
     }
     if (prevState.page !== page) {
@@ -34,7 +35,7 @@ class ImageGallery extends Component {
     this.setState({ isLoading: true });
     getPhotos(query, page)
       .then(({ data }) => this.setState({ photos: mapper(data.hits) }))
-      // .catch(error => console.log(error))
+      .catch(error => this.setState({ error }))
       .finally(this.setState({ isLoading: false }));
   };
   onLoadMore = () => {
