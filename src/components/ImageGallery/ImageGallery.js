@@ -21,12 +21,12 @@ class ImageGallery extends Component {
     const nextName = this.props.queryInput;
 
     if (prevName !== nextName) {
-      this.setState({ isLoading: true });
+      // this.setState({ isLoading: true });
       // console.log(this.state.page);
       this.fetchPhotos(nextName, page);
     }
     if (prevState.page !== page) {
-      this.setState({ isLoading: true });
+      // this.setState({ isLoading: true });
       this.fetchPhotos(nextName, page);
     }
   }
@@ -36,7 +36,7 @@ class ImageGallery extends Component {
     getPhotos(query, page)
       .then(({ data }) => this.setState({ photos: mapper(data.hits) }))
       .catch(error => this.setState({ error }))
-      .finally(this.setState({ isLoading: false }));
+      .finally(() => this.setState({ isLoading: false }));
   };
   onLoadMore = () => {
     let { page } = this.state;
