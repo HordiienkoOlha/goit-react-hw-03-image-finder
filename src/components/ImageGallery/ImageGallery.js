@@ -34,7 +34,11 @@ class ImageGallery extends Component {
   fetchPhotos = (query, page) => {
     this.setState({ isLoading: true });
     getPhotos(query, page)
-      .then(({ data }) => this.setState({ photos: mapper(data.hits) }))
+      .then(({ data }) =>
+        this.setState(prevState => ({
+          photos: [...prevState.photos, ...mapper(data.hits)],
+        }))
+      )
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ isLoading: false }));
   };
