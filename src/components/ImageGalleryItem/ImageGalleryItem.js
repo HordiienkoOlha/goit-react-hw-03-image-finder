@@ -1,22 +1,27 @@
+import { Component } from 'react';
+
 import s from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({
-  tags,
-  webformatURL,
-  largeImageURL,
-  onClickPicture,
-}) => {
-  return (
-    <li className={s.imageGalleryItem}>
-      <a className="item" href={largeImageURL}>
-        <img
-          // className="gallery-image img-fluid pt-2"
-          src={webformatURL}
-          alt={tags}
-        />
-      </a>
-    </li>
-  );
-};
+class ImageGalleryItem extends Component {
+  state = {
+    largeImageURL: '',
+  };
+
+  onChangeSelect = event => {
+    event.preventDefault();
+
+    this.props.onSubmit(this.state.largeImageURL);
+    this.setState({ largeImageURL: '' });
+  };
+
+  render() {
+    const { tags, webformatURL } = this.props;
+    return (
+      <li className={s.imageGalleryItem} onSubmit={this.onChangeSelect}>
+        <img src={webformatURL} alt={tags} onClick={this.props.openModal} />
+      </li>
+    );
+  }
+}
 
 export default ImageGalleryItem;

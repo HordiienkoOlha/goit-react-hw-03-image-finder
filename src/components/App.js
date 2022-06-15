@@ -20,10 +20,16 @@ class App extends Component {
     photos: [],
     isLoading: false,
     error: null,
-    picture: '',
+
+    largeImageURL: '',
+    active: false,
+    setModalActive: true,
   };
   onSearch = queryInput => {
     this.setState({ queryInput });
+  };
+  onSelectImage = largeImageURL => {
+    this.setState({ largeImageURL });
   };
   componentDidUpdate(prevProps, prevState) {
     const { page } = this.state;
@@ -54,16 +60,31 @@ class App extends Component {
     page += 1;
     this.setState({ page });
   };
-  onClickPicture = () => {};
+  openModal = () => this.setState({ active: true });
+  closeModal = () => this.setState({ active: false });
   render() {
-    const { onSearch, onClickPicture, onLoadMore } = this;
-    const { isLoading, photos, picture } = this.state;
+    const { onSearch, onLoadMore, onSelectImage, openModal, closeModal } = this;
+    const { isLoading, photos, active, largeImageURL } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={onSearch} />
         {isLoading && <Loader />}
-        <ImageGallery photos={photos} onClick={onClickPicture} />
-        {picture !== '' && <Modal src={picture} alt={'enlarged image'} />}
+        <ImageGallery
+          photos={photos}
+          largeImageURL={largeImageURL}
+          onClick={onSelectImage}
+          openModal={openModal}
+        />
+
+        {active && (
+          <Modal
+            largeImageURL={largeImageURL}
+            alt={'enlarged image'}
+            active={active}
+            closeModal={closeModal}
+          />
+        )}
+
         {photos.length > 0 && (
           <Button name={'Load more'} onHandle={onLoadMore}></Button>
         )}
@@ -74,3 +95,16 @@ class App extends Component {
 }
 
 export default App;
+
+//  <button
+//           type="button"
+//           onClick={() =>
+//             this.setState({
+//               largeImageURL:
+//                 'https://cdn.pixabay.com/photo/2015/04/23/21/59/tree-736877_150.jpg',
+//             })
+//           }
+//         >
+//           open
+//         </button>
+//         }
