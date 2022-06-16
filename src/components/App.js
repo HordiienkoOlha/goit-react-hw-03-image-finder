@@ -20,17 +20,11 @@ class App extends Component {
     photos: [],
     isLoading: false,
     error: null,
-
-    largeImageURL: '',
+    // id: null,
+    largeImageURL: null,
     active: false,
-    setModalActive: true,
   };
-  onSearch = queryInput => {
-    this.setState({ queryInput });
-  };
-  onSelectImage = largeImageURL => {
-    this.setState({ largeImageURL });
-  };
+
   componentDidUpdate(prevProps, prevState) {
     const { page } = this.state;
     const prevName = prevState.queryInput;
@@ -60,24 +54,34 @@ class App extends Component {
     page += 1;
     this.setState({ page });
   };
-  openModal = () => this.setState({ active: true });
+  onSearch = queryInput => {
+    this.setState({ queryInput });
+  };
+  addLink = newLink => {
+    this.setState({
+      largeImageURL: newLink,
+    });
+  };
+  openModal = () => {
+    this.setState({ active: true });
+  };
   closeModal = () => this.setState({ active: false });
   render() {
-    const { onSearch, onLoadMore, onSelectImage, openModal, closeModal } = this;
-    const { isLoading, photos, active, largeImageURL } = this.state;
+    const { onSearch, onLoadMore, addLink, openModal, closeModal } = this;
+    const { isLoading, photos, active, id, largeImageURL } = this.state;
     return (
       <div className={s.app}>
         <Searchbar onSubmit={onSearch} />
         {isLoading && <Loader />}
         <ImageGallery
+          onSubmit={addLink}
           photos={photos}
-          largeImageURL={largeImageURL}
-          onClick={onSelectImage}
           openModal={openModal}
         />
 
         {active && (
           <Modal
+            id={id}
             largeImageURL={largeImageURL}
             alt={'enlarged image'}
             active={active}

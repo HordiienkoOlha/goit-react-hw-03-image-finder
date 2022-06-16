@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-const ImageGallery = ({ photos, onSelectImage, openModal }) => {
+const ImageGallery = ({ photos, onSubmit, openModal }) => {
   return (
-    <ul className={s.imageGallery}>
+    <ul
+      className={s.imageGallery}
+      onClick={e => {
+        console.log(e.target.attributes);
+        onSubmit(e.target.attributes.getNamedItem('datalink').value);
+      }}
+    >
       {photos.map(({ id, tags, webformatURL, largeImageURL }) => {
         // console.log(id, tags, webformatURL, largeImageURL);
         return (
@@ -15,7 +21,6 @@ const ImageGallery = ({ photos, onSelectImage, openModal }) => {
             alt={tags}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
-            onClick={onSelectImage}
             openModal={openModal}
           />
         );
@@ -33,7 +38,7 @@ ImageGallery.propTypes = {
       largeImageURL: PropTypes.string.isRequired,
     })
   ).isRequired,
-  onSelectImage: PropTypes.func,
+  onSubmit: PropTypes.func,
   openModal: PropTypes.func.isRequired,
 };
 

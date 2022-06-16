@@ -4,32 +4,30 @@ import { Component } from 'react';
 import s from './Modal.module.css';
 
 class Modal extends Component {
-  state = {
-    active: true,
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
   };
-  onCloseModal = event => {
-    event.preventDefault();
-    // if (event.onKeyPress === 'Escape') {
-    //   this.props.closeModal;
-    // }
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+  onKeyDown = e => {
+    if (e.code === 'Escape') this.props.closeModal();
   };
   render() {
-    const { largeImageURL, alt, closeModal } = this.props;
-    const { onCloseModal } = this;
+    const { largeImageURL, closeModal } = this.props;
     return (
       <div className={s.overlay} onClick={closeModal}>
-        <div className={s.modal} onClick={onCloseModal}>
-          <img src={largeImageURL} alt={alt} />
+        <div className={s.modal}>
+          <img src={largeImageURL} alt="Big card" />
         </div>
       </div>
     );
   }
 }
-
-Modal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  largeImageURL: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-};
 
 export default Modal;
