@@ -20,7 +20,6 @@ class App extends Component {
     photos: [],
     isLoading: false,
     error: null,
-    // id: null,
     largeImageURL: null,
     active: false,
   };
@@ -28,12 +27,10 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { page } = this.state;
     const prevName = prevState.queryInput;
+    const prevPage = prevState.page;
     const nextName = this.state.queryInput;
 
-    if (prevName !== nextName) {
-      this.fetchPhotos(nextName, page);
-    }
-    if (prevState.page !== page) {
+    if (prevName !== nextName || prevPage !== page) {
       this.fetchPhotos(nextName, page);
     }
   }
@@ -57,6 +54,7 @@ class App extends Component {
   onSearch = queryInput => {
     this.setState({ queryInput });
     this.setState({ photos: [] });
+    this.setState({ page: 1 });
   };
   addLink = newLink => {
     this.setState({
@@ -73,15 +71,20 @@ class App extends Component {
     return (
       <div className={s.app}>
         <Searchbar onSubmit={onSearch} />
-        {isLoading && <Loader />}
-        <ImageGallery
-          onSubmit={addLink}
-          photos={photos}
-          openModal={openModal}
-        />
+
         {photos.length > 0 && (
-          <Button name={'Load more'} onHandle={onLoadMore}></Button>
+          <>
+            <ImageGallery
+              onSubmit={addLink}
+              photos={photos}
+              openModal={openModal}
+            />
+          </>
         )}
+        {(isLoading && <Loader />) ||
+          (photos.length > 0 && (
+            <Button name={'Load more'} onHandle={onLoadMore} />
+          ))}
         {active && (
           <Modal
             id={id}
@@ -98,3 +101,14 @@ class App extends Component {
 }
 
 export default App;
+// {isLoading && <Loader />}
+// {photos.length > 0 && (
+//   <>
+//     <ImageGallery
+//       onSubmit={addLink}
+//       photos={photos}
+//       openModal={openModal}
+//     />
+//     <Button name={'Load more'} onHandle={onLoadMore} />
+//   </>
+// )}
