@@ -8,7 +8,6 @@ const ImageGallery = ({ photos, onSubmit, openModal }) => {
     <ul
       className={s.imageGallery}
       onClick={e => {
-        console.log(e.target.attributes);
         onSubmit(e.target.attributes.getNamedItem('datalink').value);
       }}
     >

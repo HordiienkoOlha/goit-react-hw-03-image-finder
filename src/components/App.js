@@ -56,6 +56,7 @@ class App extends Component {
   };
   onSearch = queryInput => {
     this.setState({ queryInput });
+    this.setState({ photos: [] });
   };
   addLink = newLink => {
     this.setState({
@@ -78,7 +79,9 @@ class App extends Component {
           photos={photos}
           openModal={openModal}
         />
-
+        {photos.length > 0 && (
+          <Button name={'Load more'} onHandle={onLoadMore}></Button>
+        )}
         {active && (
           <Modal
             id={id}
@@ -88,10 +91,6 @@ class App extends Component {
             closeModal={closeModal}
           />
         )}
-
-        {photos.length > 0 && (
-          <Button name={'Load more'} onHandle={onLoadMore}></Button>
-        )}
         <ToastContainer />
       </div>
     );
@@ -99,4 +98,3 @@ class App extends Component {
 }
 
 export default App;
-
