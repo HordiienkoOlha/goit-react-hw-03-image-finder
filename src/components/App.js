@@ -100,15 +100,3 @@ class App extends Component {
 
 export default App;
 
-//  <button
-//           type="button"
-//           onClick={() =>
-//             this.setState({
-//               largeImageURL:
-//                 'https://cdn.pixabay.com/photo/2015/04/23/21/59/tree-736877_150.jpg',
-//             })
-//           }
-//         >
-//           open
-//         </button>
-//         }

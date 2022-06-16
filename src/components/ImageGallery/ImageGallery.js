@@ -13,12 +13,11 @@ const ImageGallery = ({ photos, onSubmit, openModal }) => {
       }}
     >
       {photos.map(({ id, tags, webformatURL, largeImageURL }) => {
-        // console.log(id, tags, webformatURL, largeImageURL);
         return (
           <ImageGalleryItem
             key={id}
             id={id}
-            alt={tags}
+            tags={tags}
             webformatURL={webformatURL}
             largeImageURL={largeImageURL}
             openModal={openModal}
